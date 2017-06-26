@@ -1,0 +1,6 @@
+framework module Pods_Image_Social {
+  umbrella header "Pods-Image Social-umbrella.h"
+
+  export *
+  module * { export * }
+}
