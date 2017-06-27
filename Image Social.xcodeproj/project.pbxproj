@@ -13,6 +13,11 @@
 		13581CCA1F01CB48006469F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13581CC91F01CB48006469F9 /* Assets.xcassets */; };
 		13581CCD1F01CB48006469F9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 13581CCB1F01CB48006469F9 /* LaunchScreen.storyboard */; };
 		13581CD51F01CC34006469F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13581CD41F01CC34006469F9 /* GoogleService-Info.plist */; };
+		13C7A8E91F02D04C0020520E /* SignInHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C7A8E81F02D04C0020520E /* SignInHeaderView.swift */; };
+		13C7A8EC1F02D1040020520E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C7A8EB1F02D1040020520E /* Constants.swift */; };
+		13C7A8EE1F02D31B0020520E /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C7A8ED1F02D31B0020520E /* RoundButton.swift */; };
+		13C7A8F01F02D6360020520E /* LogInFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C7A8EF1F02D6360020520E /* LogInFields.swift */; };
+		13C7A8F21F02D78F0020520E /* SignInButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C7A8F11F02D78F0020520E /* SignInButton.swift */; };
 		3C3BEE6F6882C1CE4EC4E835 /* Pods_Image_Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC2A7D366B9AC76E14495AFC /* Pods_Image_Social.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +30,11 @@
 		13581CCC1F01CB48006469F9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		13581CCE1F01CB48006469F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		13581CD41F01CC34006469F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		13C7A8E81F02D04C0020520E /* SignInHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInHeaderView.swift; sourceTree = "<group>"; };
+		13C7A8EB1F02D1040020520E /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		13C7A8ED1F02D31B0020520E /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+		13C7A8EF1F02D6360020520E /* LogInFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInFields.swift; sourceTree = "<group>"; };
+		13C7A8F11F02D78F0020520E /* SignInButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInButton.swift; sourceTree = "<group>"; };
 		549A183642FD5AEC47FDE10E /* Pods-Image Social.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Image Social.release.xcconfig"; path = "Pods/Target Support Files/Pods-Image Social/Pods-Image Social.release.xcconfig"; sourceTree = "<group>"; };
 		AC2A7D366B9AC76E14495AFC /* Pods_Image_Social.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Image_Social.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4B1F540CFAFDC0604055750 /* Pods-Image Social.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Image Social.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Image Social/Pods-Image Social.debug.xcconfig"; sourceTree = "<group>"; };
@@ -52,6 +62,10 @@
 		131649FE1F01D01300644DF8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				13C7A8E81F02D04C0020520E /* SignInHeaderView.swift */,
+				13C7A8ED1F02D31B0020520E /* RoundButton.swift */,
+				13C7A8EF1F02D6360020520E /* LogInFields.swift */,
+				13C7A8F11F02D78F0020520E /* SignInButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -85,6 +99,7 @@
 		13581CC11F01CB47006469F9 /* Image Social */ = {
 			isa = PBXGroup;
 			children = (
+				13C7A8EA1F02D0F50020520E /* Util */,
 				131649FD1F01D00A00644DF8 /* Model */,
 				131649FE1F01D01300644DF8 /* View */,
 				131649FF1F01D01F00644DF8 /* Controller */,
@@ -96,6 +111,14 @@
 				13581CD41F01CC34006469F9 /* GoogleService-Info.plist */,
 			);
 			path = "Image Social";
+			sourceTree = "<group>";
+		};
+		13C7A8EA1F02D0F50020520E /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				13C7A8EB1F02D1040020520E /* Constants.swift */,
+			);
+			name = Util;
 			sourceTree = "<group>";
 		};
 		2E05EF2B8EB869FB28B4D7CC /* Pods */ = {
@@ -240,8 +263,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13C7A8F21F02D78F0020520E /* SignInButton.swift in Sources */,
 				13581CC51F01CB48006469F9 /* ViewController.swift in Sources */,
+				13C7A8EE1F02D31B0020520E /* RoundButton.swift in Sources */,
+				13C7A8F01F02D6360020520E /* LogInFields.swift in Sources */,
+				13C7A8E91F02D04C0020520E /* SignInHeaderView.swift in Sources */,
 				13581CC31F01CB48006469F9 /* AppDelegate.swift in Sources */,
+				13C7A8EC1F02D1040020520E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
