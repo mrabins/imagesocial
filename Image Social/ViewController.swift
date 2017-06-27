@@ -11,20 +11,54 @@ import FBSDKLoginKit
 import Firebase
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var emailAddressTextField: LogInFields!
+    @IBOutlet weak var passwordTextField: LogInFields!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    func firebaseAuthenticate(_ credential: AuthCredential) {
+        let firebaseAuth = Auth.auth()
+        firebaseAuth.signIn(with: credential) { (user, error) in
+            if error != nil {
+                print("Unable to euthenticate - \(String(describing: error))")
+            } else {
+                print("Successfully authenticated with Firebase")
+            }
+        }
+        
+    }
+    
+    func validateEmail(enteredEmailAddress: String) -> Bool {
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: enteredEmailAddress)
+    }
+    
+    func validateLogin() {
+        if validateEmail(enteredEmailAddress: emailAddressTextField.text!) == false {
+            let noEmailAlert = UIAlertController(title: "No Email", message: "Please Reenter A Valid Email And Try Again", preferredStyle: .alert)
+            noEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            }))
+            self.present(noEmailAlert, animated: true, completion: nil)
+        }
+        if (passwordTextField.text?.characters.count)! <= 6 {
+            let passwordAlert = UIAlertController(title: "Password Error", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again", preferredStyle: .alert)
+            passwordAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
+            }))
+            self.present(passwordAlert, animated: true, completion: nil)
+        }
+    }
     
     @IBAction func facebookButtonTapped(_ sender: UIButton) {
-        
         let facebookLogin = FBSDKLoginManager()
         facebookLogin.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             if error != nil {
@@ -40,17 +74,25 @@ class ViewController: UIViewController {
         
     }
     
-    func firebaseAuthenticate(_ credential: AuthCredential) {
-        let firebaseAuth = Auth.auth()
-        firebaseAuth.signIn(with: credential) { (user, error) in
-            if error != nil {
-                print("Unable to euthenticate - \(String(describing: error))")
-            } else {
-                print("Successfully authenticated with Firebase")
-            }
-        }
+    @IBAction func signinButtonTapped(_ sender: UIButton) {
         
+        validateLogin()
+        
+        if let email = emailAddressTextField.text, let password = passwordTextField.text {
+            Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
+                if error == nil {
+                    print("Email User authtenticated with Firebase")
+                } else {
+                    Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+                        if error != nil {
+                            print("Failed to create a user - Unable to authenticate with Firebase using email")
+                        } else {
+                            print("Successfully authenticated with Firebase")
+                        }
+                    })
+                }
+            })
+        }
     }
-   
 }
 
