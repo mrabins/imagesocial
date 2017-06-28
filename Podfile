@@ -11,6 +11,6 @@ target 'Image Social' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'FacebookLogin'
-
+  pod 'SwiftKeychainWrapper'
 
 end
