@@ -19,9 +19,10 @@ class FeedVC: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        feedTableView.delegate = self as? UITableViewDelegate
-        feedTableView.dataSource = self as? UITableViewDataSource
-    } 
+        feedTableView.delegate = self
+        feedTableView.dataSource = self
+    
+}
 
     /*
     // MARK: - Navigation
@@ -33,7 +34,7 @@ class FeedVC: UIViewController {
     }
     */
     
-    @IBAction func signInTapped(_ sender: UIButton) {
+    @IBAction func signOutTapped(_ sender: UIButton) {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
@@ -43,4 +44,27 @@ class FeedVC: UIViewController {
             print ("Error signing out: %@", signOutError)
         }
     }
+}
+
+extension FeedVC: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return feedTableView.dequeueReusableCell(withIdentifier: "feedCell") as! PostsCell
+    }
+    
+}
+
+extension FeedVC: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 375.0
+    }
+    
 }
