@@ -13,8 +13,8 @@ import SwiftKeychainWrapper
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var emailAddressTextField: LogInFields!
-    @IBOutlet weak var passwordTextField: LogInFields!
+    @IBOutlet weak var emailAddressTextField: customTextFields!
+    @IBOutlet weak var passwordTextField: customTextFields!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +34,6 @@ class ViewController: UIViewController {
             if error != nil {
                 print("Unable to euthenticate - \(String(describing: error))")
             } else {
-                print("Successfully authenticated with Firebase")
                 if let user = user {
                     self.completeSignIn(id: user.uid)
                 }
@@ -71,7 +70,6 @@ class ViewController: UIViewController {
             } else if result?.isCancelled == true {
                 print("User cancelled FB Authentication")
             } else {
-                print("Successfully Authenticated with FB")
                 let credential = FacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
                 self.firebaseAuthenticate(credential)
             }
@@ -92,9 +90,8 @@ class ViewController: UIViewController {
                 } else {
                     Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil {
-                            print("Failed to create a user - Unable to authenticate with Firebase using email")
+                                self.validateLogin()
                         } else {
-                            print("Successfully authenticated with Firebase")
                             if let user = user {
                                 self.completeSignIn(id: (user.uid))
                             }
@@ -106,8 +103,7 @@ class ViewController: UIViewController {
     }
     
     func completeSignIn(id: String) {
-        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
-        print("Data saved to keychain \(keychainResult) ID is: \(id) key is: \(KEY_UID)")
+        _ = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         performSegue(withIdentifier: "signInToFeedSegue", sender: self)
         
     }

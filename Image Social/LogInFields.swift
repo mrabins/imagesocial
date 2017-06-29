@@ -1,5 +1,5 @@
 //
-//  LogInFields.swift
+//  customTextFields.swift
 //  Image Social
 //
 //  Created by Mark Rabins on 6/27/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInFields: UITextField {
+class customTextFields: UITextField {
 
     override func awakeFromNib() {
         super.awakeFromNib()

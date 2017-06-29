@@ -12,10 +12,15 @@ import SwiftKeychainWrapper
 
 class FeedVC: UIViewController {
 
+    @IBOutlet weak var feedTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        feedTableView.delegate = self as? UITableViewDelegate
+        feedTableView.dataSource = self as? UITableViewDataSource
     } 
 
     /*
