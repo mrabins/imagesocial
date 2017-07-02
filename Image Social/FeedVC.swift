@@ -11,31 +11,33 @@ import Firebase
 import SwiftKeychainWrapper
 
 class FeedVC: UIViewController {
-
+    
     @IBOutlet weak var feedTableView: UITableView!
+    
+    var posts = [Post]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
         feedTableView.delegate = self
         feedTableView.dataSource = self
-    
+        
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
-            print("Here's the data", snapshot.value ?? snapshot)
+            
+            if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
+                for  snap in snapshot {
+                    if let postDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        let post = Post(postId: key, postData: postDict)
+                        self.posts.append(post)
+                    }
+                }
+            }
+            self.feedTableView.reloadData()
         })
-}
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
     
     @IBAction func signOutTapped(_ sender: UIButton) {
         let firebaseAuth = Auth.auth()
@@ -51,8 +53,16 @@ class FeedVC: UIViewController {
 
 extension FeedVC: UITableViewDelegate {
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return feedTableView.dequeueReusableCell(withIdentifier: "feedCell") as! PostsCell
+        let post = posts[indexPath.row]
+        
+        if let cell = feedTableView.dequeueReusableCell(withIdentifier: "feedCell") as? PostsCell {
+            cell.configureCell(post: post)
+            return cell
+        } else {
+            return PostsCell()
+        }
     }
     
 }
@@ -63,7 +73,7 @@ extension FeedVC: UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return posts.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
