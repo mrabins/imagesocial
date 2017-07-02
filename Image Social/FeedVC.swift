@@ -13,8 +13,10 @@ import SwiftKeychainWrapper
 class FeedVC: UIViewController {
     
     @IBOutlet weak var feedTableView: UITableView!
+    @IBOutlet weak var imageAdd: CircleImageView!
     
     var posts = [Post]()
+    var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,10 @@ class FeedVC: UIViewController {
         
         feedTableView.delegate = self
         feedTableView.dataSource = self
+
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
             
@@ -37,6 +43,10 @@ class FeedVC: UIViewController {
             }
             self.feedTableView.reloadData()
         })
+    }
+    
+    @IBAction func addImageTapped(_ sender: UITapGestureRecognizer) {
+            present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func signOutTapped(_ sender: UIButton) {
@@ -80,4 +90,17 @@ extension FeedVC: UITableViewDataSource {
         return 375.0
     }
     
+}
+
+extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+            imageAdd.image = image
+        } else {
+            print("Image wasn't selected")
+        }
+        
+        imagePicker.dismiss(animated: true, completion: nil)
+    }
 }
