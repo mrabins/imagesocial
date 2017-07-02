@@ -22,6 +22,9 @@ class FeedVC: UIViewController {
         feedTableView.delegate = self
         feedTableView.dataSource = self
     
+        DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
+            print("Here's the data", snapshot.value ?? snapshot)
+        })
 }
 
     /*
