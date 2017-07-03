@@ -17,7 +17,7 @@ class PostsCell: UITableViewCell {
     @IBOutlet weak var captionTextView: UITextView!
     @IBOutlet weak var likesLabel: UILabel!
     @IBOutlet weak var likes: UIImageView!
-
+    
     var post: Post!
     var likesRef: DatabaseReference!
     
@@ -33,6 +33,7 @@ class PostsCell: UITableViewCell {
     func configureCell(post: Post, image: UIImage? = nil) {
         self.post = post
         likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postId)
+        
         self.captionTextView.text = post.caption
         self.likesLabel.text = "\(post.likes)"
         
@@ -54,27 +55,32 @@ class PostsCell: UITableViewCell {
                 
             })
         }
-        likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let _ = snapshot.value as? NSNull {
-                self.likes.image = UIImage(named: "empty-heart")
-            } else {
-                self.likes.image = UIImage(named: "filled-heart")
-            }
-        })
         
+        likesFromFirebase(noLikes: "empty-heart", yesLikes: "filled-heart")
     }
     
-    func likesTapped(sender: UITapGestureRecognizer) {
+    func likesFromFirebase(noLikes: String, yesLikes: String) {
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if let _ = snapshot.value as? NSNull {
-                self.likes.image = UIImage(named: "filled-heart")
-                self.post.adjustLikes(addLike: true)
-                self.likesRef.setValue(true)
+                self.likes.image = UIImage(named: noLikes)
             } else {
-                self.likes.image = UIImage(named: "empty-heart")
-                self.post.adjustLikes(addLike: false)
-                self.likesRef.removeValue()
+                self.likes.image = UIImage(named: yesLikes)
             }
         })
     }
-}
+    
+        func likesTapped(sender: UITapGestureRecognizer) {
+            likesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let _ = snapshot.value as? NSNull {
+                    self.likesFromFirebase(noLikes: "filled-heart", yesLikes: "")
+                    self.post.adjustLikes(addLike: true)
+                    self.likesRef.setValue(true)
+                } else {
+                    self.likesFromFirebase(noLikes: "", yesLikes: "empty-heart")
+                    self.post.adjustLikes(addLike: false)
+                    self.likesRef.removeValue()
+                }
+            })
+        }
+    }
+
