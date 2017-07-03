@@ -17,6 +17,8 @@ class FeedVC: UIViewController {
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
+    static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +27,7 @@ class FeedVC: UIViewController {
         
         feedTableView.delegate = self
         feedTableView.dataSource = self
-
+        
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
@@ -46,7 +48,7 @@ class FeedVC: UIViewController {
     }
     
     @IBAction func addImageTapped(_ sender: UITapGestureRecognizer) {
-            present(imagePicker, animated: true, completion: nil)
+        present(imagePicker, animated: true, completion: nil)
     }
     
     @IBAction func signOutTapped(_ sender: UIButton) {
@@ -61,15 +63,22 @@ class FeedVC: UIViewController {
     }
 }
 
+// MARK: TableViewDelegate
 extension FeedVC: UITableViewDelegate {
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let post = posts[indexPath.row]
         
         if let cell = feedTableView.dequeueReusableCell(withIdentifier: "feedCell") as? PostsCell {
-            cell.configureCell(post: post)
-            return cell
+            
+            if let image = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
+                cell.configureCell(post: post, image: image)
+                return cell
+                
+            } else {
+                cell.configureCell(post: post)
+                return cell
+            }
         } else {
             return PostsCell()
         }
@@ -77,6 +86,7 @@ extension FeedVC: UITableViewDelegate {
     
 }
 
+// MARK: TableViewDataSource
 extension FeedVC: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -92,6 +102,7 @@ extension FeedVC: UITableViewDataSource {
     
 }
 
+// MARK: UIImagePickerController Delegate & DataSource
 extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
