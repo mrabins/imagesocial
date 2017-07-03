@@ -15,13 +15,13 @@ class FeedVC: UIViewController {
     //MARK: IBOutlets
     @IBOutlet weak var feedTableView: UITableView!
     @IBOutlet weak var imageAdd: CircleImageView!
-    @IBOutlet weak var captionField: customTextFields!
+    @IBOutlet weak var captionField: CustomTextFields!
     
     //MARK: Global Variables
     var posts = [Post]()
-    var imagePicker: UIImagePickerController!
+    var postImagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
-    var imageSelected = false
+    var postImageSelected = false
     
     
     override func viewDidLoad() {
@@ -32,9 +32,9 @@ class FeedVC: UIViewController {
         feedTableView.delegate = self
         feedTableView.dataSource = self
         
-        imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
+        postImagePicker = UIImagePickerController()
+        postImagePicker.delegate = self
+        postImagePicker.allowsEditing = true
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
             
@@ -60,25 +60,14 @@ class FeedVC: UIViewController {
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
         firebasePost.setValue(post)
         captionField.text = ""
-        imageSelected = false
+        postImageSelected = false
         imageAdd.image = UIImage(named: "add-image")
         feedTableView.reloadData()
     }
     
     // MARK: IBActions
     @IBAction func addImageTapped(_ sender: UITapGestureRecognizer) {
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func signOutTapped(_ sender: UIButton) {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            _ = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
-            dismiss(animated: true, completion: nil)
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
+        present(postImagePicker, animated: true, completion: nil)
     }
     
     @IBAction func postButtonTapped(_ sender: UIButton) {
@@ -90,7 +79,7 @@ class FeedVC: UIViewController {
             return
         }
         
-        guard let image = imageAdd.image, imageSelected == true else {
+        guard let image = imageAdd.image, postImageSelected == true else {
             let noImageAlert = UIAlertController(title: "No Image", message: "You Cannot Create A Post Without A Image. Please Add A Image And Try Again", preferredStyle: .alert)
             noImageAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
             }))
@@ -117,6 +106,23 @@ class FeedVC: UIViewController {
                 }
                 
             }
+        }
+    }
+    
+    
+    @IBAction func profileTapped(_ sender: UITapGestureRecognizer) {
+        performSegue(withIdentifier: "profileSegue", sender: self)
+    }
+    
+    
+    @IBAction func signOutTapped(_ sender: UIButton) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            _ = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
+            dismiss(animated: true, completion: nil)
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
         }
     }
 }
@@ -163,11 +169,11 @@ extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imageAdd.image = image
-            imageSelected = true
+            postImageSelected = true
         } else {
             print("Image wasn't selected")
         }
         
-        imagePicker.dismiss(animated: true, completion: nil)
+        postImagePicker.dismiss(animated: true, completion: nil)
     }
 }

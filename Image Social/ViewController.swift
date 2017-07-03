@@ -13,12 +13,15 @@ import SwiftKeychainWrapper
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var emailAddressTextField: customTextFields!
-    @IBOutlet weak var passwordTextField: customTextFields!
+    //MARK: IBOutlet
+    @IBOutlet weak var emailAddressTextField: CustomTextFields!
+    @IBOutlet weak var passwordTextField: CustomTextFields!
+    
+    let firstLaunch = UserDefaults.standard.bool(forKey: "firstLaunch")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,14 +80,21 @@ class ViewController: UIViewController {
         }
     }
     
+    func checkIfFirstLaunch(){
+        if UserDefaults.standard.object(forKey: "firstLaunch") == nil {
+            let profileVC = ProfileVC()
+            self.present(profileVC, animated: true, completion: nil)
+        }
+            performSegue(withIdentifier: "signInToFeedSegue", sender: self)
+    }
+    
+    // MARK: IBActions
     @IBAction func signinButtonTapped(_ sender: UIButton) {
-        
         validateLogin()
         
         if let email = emailAddressTextField.text, let password = passwordTextField.text {
             Auth.auth().signIn(withEmail: email, password: password, completion: { (user, error) in
                 if error == nil {
-                    print("Email User authtenticated with Firebase")
                     if let user = user {
                         let userData = ["provider": user.providerID]
                         self.completeSignIn(id: user.uid, userData: userData)
@@ -92,7 +102,7 @@ class ViewController: UIViewController {
                 } else {
                     Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
                         if error != nil {
-                                self.validateLogin()
+                            self.validateLogin()
                         } else {
                             if let user = user {
                                 let userData = ["provider": user.providerID]
@@ -108,8 +118,7 @@ class ViewController: UIViewController {
     func completeSignIn(id: String, userData: Dictionary<String, String>) {
         DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
         _ = KeychainWrapper.standard.set(id, forKey: KEY_UID)
-        performSegue(withIdentifier: "signInToFeedSegue", sender: self)
-        
+        checkIfFirstLaunch()
     }
 }
 

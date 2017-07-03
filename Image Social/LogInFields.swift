@@ -1,5 +1,5 @@
 //
-//  customTextFields.swift
+//  CustomTextFields.swift
 //  Image Social
 //
 //  Created by Mark Rabins on 6/27/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class customTextFields: UITextField {
+class CustomTextFields: UITextField {
 
     override func awakeFromNib() {
         super.awakeFromNib()

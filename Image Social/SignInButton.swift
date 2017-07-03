@@ -1,5 +1,5 @@
 //
-//  SignInButton.swift
+//  CustomButton.swift
 //  Image Social
 //
 //  Created by Mark Rabins on 6/27/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SignInButton: UIButton {
+class CustomButton: UIButton {
 
     override func awakeFromNib() {
         super.awakeFromNib()
