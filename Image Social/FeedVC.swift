@@ -51,6 +51,20 @@ class FeedVC: UIViewController {
         })
     }
     
+    func postToFirebaseDatabase(imageUrl: String) {
+        let post: Dictionary<String, AnyObject> = [
+            "caption": captionField.text! as AnyObject,
+            "imageUrl": imageUrl as AnyObject,
+            "likes": 0 as AnyObject]
+        
+        let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+        firebasePost.setValue(post)
+        captionField.text = ""
+        imageSelected = false
+        imageAdd.image = UIImage(named: "add-image")
+        feedTableView.reloadData()
+    }
+    
     // MARK: IBActions
     @IBAction func addImageTapped(_ sender: UITapGestureRecognizer) {
         present(imagePicker, animated: true, completion: nil)
@@ -93,6 +107,9 @@ class FeedVC: UIViewController {
                     print("Unable to upload image to FIRStorage")
                 } else {
                     let downloadURL = metaData?.downloadURL()?.absoluteString
+                    if let url = downloadURL {
+                        self.postToFirebaseDatabase(imageUrl: url)
+                    }
                 }
                 
             }
@@ -107,15 +124,12 @@ extension FeedVC: UITableViewDelegate {
         let post = posts[indexPath.row]
         
         if let cell = feedTableView.dequeueReusableCell(withIdentifier: "feedCell") as? PostsCell {
-            
             if let image = FeedVC.imageCache.object(forKey: post.imageUrl as NSString) {
                 cell.configureCell(post: post, image: image)
-                return cell
-                
             } else {
                 cell.configureCell(post: post)
-                return cell
             }
+            return cell
         } else {
             return PostsCell()
         }

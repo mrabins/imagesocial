@@ -263,7 +263,7 @@
                                                             <color key="textColor" red="0.86666666670000003" green="0.17254901959999999" blue="0.0" alpha="0.87" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="8m7-Ld-hod">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no-image" translatesAutoresizingMaskIntoConstraints="NO" id="8m7-Ld-hod">
                                                             <rect key="frame" x="8" y="76" width="327" height="144"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="144" id="gZ6-IV-XXP"/>
@@ -336,6 +336,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="captionTextView" destination="3U9-pQ-RwE" id="Djo-7l-jMl"/>
+                                            <outlet property="likes" destination="4Bu-hV-Dsc" id="yau-r4-XFi"/>
                                             <outlet property="likesLabel" destination="Y3n-cE-z1J" id="ZmE-Vz-CBE"/>
                                             <outlet property="postImage" destination="8m7-Ld-hod" id="bHo-xg-2M7"/>
                                             <outlet property="profileImage" destination="tvZ-1B-ld7" id="bMt-e3-s1b"/>
@@ -382,7 +383,7 @@
         <image name="add-post" width="88" height="88"/>
         <image name="empty-heart" width="70" height="70"/>
         <image name="f" width="352" height="328"/>
-        <image name="placeholder" width="567" height="312"/>
+        <image name="no-image" width="300" height="300"/>
         <image name="profile" width="44" height="60"/>
         <image name="sign-out" width="92" height="65"/>
     </resources>
