@@ -12,12 +12,16 @@ import SwiftKeychainWrapper
 
 class FeedVC: UIViewController {
     
+    //MARK: IBOutlets
     @IBOutlet weak var feedTableView: UITableView!
     @IBOutlet weak var imageAdd: CircleImageView!
+    @IBOutlet weak var captionField: customTextFields!
     
+    //MARK: Global Variables
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    var imageSelected = false
     
     
     override func viewDidLoad() {
@@ -47,6 +51,7 @@ class FeedVC: UIViewController {
         })
     }
     
+    // MARK: IBActions
     @IBAction func addImageTapped(_ sender: UITapGestureRecognizer) {
         present(imagePicker, animated: true, completion: nil)
     }
@@ -59,6 +64,38 @@ class FeedVC: UIViewController {
             dismiss(animated: true, completion: nil)
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
+        }
+    }
+    
+    
+    @IBAction func postButtonTapped(_ sender: UIButton) {
+        guard let caption = captionField.text, caption != "" else {
+            print("NO CAPTION")
+            
+            // TODO - Create UIAlertController
+            
+            return
+        }
+        
+        guard let image = imageAdd.image, imageSelected == true else {
+            print("AN IMAGE MUST BE SELECTED")
+            
+            // TODO - Create UIAlertController
+            return
+        }
+        
+        if let imageData = UIImageJPEGRepresentation(image, 0.2) {
+            let imageUid = NSUUID().uuidString
+            let metaData = StorageMetadata()
+            metaData.contentType = "image/jpeg"
+            DataService.ds.REF_POST_IMAGES.child(imageUid).putData(imageData, metadata: metaData) { (metaData, error) in
+                if error != nil {
+                    print("Unable to upload image to FIRStorage")
+                } else {
+                    let downloadURL = metaData?.downloadURL()?.absoluteString
+                }
+                
+            }
         }
     }
 }
@@ -108,6 +145,7 @@ extension FeedVC: UIImagePickerControllerDelegate, UINavigationControllerDelegat
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imageAdd.image = image
+            imageSelected = true
         } else {
             print("Image wasn't selected")
         }

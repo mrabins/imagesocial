@@ -37,7 +37,6 @@ class PostsCell: UITableViewCell {
                 if error != nil {
                     print("Unable to download image from FIRStorage")
                 } else {
-                    print("Image downloaded from FIRStorage")
                     if let imageData = data {
                         if let image = UIImage(data: imageData) {
                             self.postImage.image = image
