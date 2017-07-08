@@ -111,7 +111,7 @@ class FeedVC: UIViewController {
     
     
     @IBAction func profileTapped(_ sender: UITapGestureRecognizer) {
-        performSegue(withIdentifier: "profileSegue", sender: self)
+        performSegue(withIdentifier: "profileSegue", sender: nil)
     }
     
     

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import SwiftKeychainWrapper
 
 
 class ProfileVC: UIViewController {
@@ -27,23 +29,31 @@ class ProfileVC: UIViewController {
         profileImagePicker.delegate = self
         profileImagePicker.allowsEditing = true
         
-        self.usernameTextField.delegate = self
-        
         usernameTextField.addTarget(self, action: #selector(profileComplete), for: .editingChanged)
     }
     
-        func profileComplete(_ usernameTextField: UITextField, profileImageView: UIImageView) {
-            if (usernameTextField.text?.characters.count)! >= 1 {
-                profileImageSelected = false
-            }
+    
+    func profileComplete() {
+        if usernameTextField.hasText && profileImageSelected == true {
+            saveButton.isHidden = false
         }
+    }
     
     
     //MARK: IBAction
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-
         
+        // TODO: Save to Firebase
+        
+        
+        dismiss(animated: true, completion: nil)
     }
+    
+    
+    @IBAction func backButtonPressed(_ sender: UITapGestureRecognizer) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     
     @IBAction func selectionProfileImageView(_ sender: UITapGestureRecognizer) {
         present(profileImagePicker, animated: true, completion: nil)
@@ -52,19 +62,14 @@ class ProfileVC: UIViewController {
 
 
 //MARK: Extension
-extension ProfileVC: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        usernameTextField.resignFirstResponder()
-        return true
-    }
-}
-
 extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let profileImage = info[UIImagePickerControllerEditedImage] as? UIImage {
             profileImageView.image = profileImage
             profileImageSelected = true
+            profileComplete()
+            
         }
         profileImagePicker.dismiss(animated: true, completion: nil)
     }

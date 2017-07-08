@@ -27,7 +27,8 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
-            performSegue(withIdentifier: "signInToFeedSegue", sender: self)
+            performSegue(withIdentifier: "signInToFeedSegue", sender: nil)
+            
         }
     }
     
@@ -85,7 +86,7 @@ class ViewController: UIViewController {
             let profileVC = ProfileVC()
             self.present(profileVC, animated: true, completion: nil)
         }
-            performSegue(withIdentifier: "signInToFeedSegue", sender: self)
+            performSegue(withIdentifier: "signInToFeedSegue", sender: nil)
     }
     
     // MARK: IBActions
