@@ -73,16 +73,14 @@ class FeedVC: UIViewController {
     @IBAction func postButtonTapped(_ sender: UIButton) {
         guard let caption = captionField.text, caption != "" else {
             let noCaptionAlert = UIAlertController(title: "No Caption", message: "You Cannot Create A Post Without A Caption. Please Add A Caption And Try Again", preferredStyle: .alert)
-            noCaptionAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            }))
+            noCaptionAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                 self.present(noCaptionAlert, animated: true, completion: nil)
             return
         }
         
         guard let image = imageAdd.image, postImageSelected == true else {
             let noImageAlert = UIAlertController(title: "No Image", message: "You Cannot Create A Post Without A Image. Please Add A Image And Try Again", preferredStyle: .alert)
-            noImageAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            }))
+            noImageAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(noImageAlert, animated: true, completion: nil)
             return
         }
@@ -94,9 +92,7 @@ class FeedVC: UIViewController {
             DataService.ds.REF_POST_IMAGES.child(imageUid).putData(imageData, metadata: metaData) { (metaData, error) in
                 if error != nil {
                     let errorOccured = UIAlertController(title: "Opps", message: "An Error Occured. Please Try Again.", preferredStyle: .alert)
-                    errorOccured.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-                        
-                    }))
+                    errorOccured.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
                     self.present(errorOccured, animated: true, completion: nil)
                 } else {
                     let downloadURL = metaData?.downloadURL()?.absoluteString

@@ -55,14 +55,12 @@ class ViewController: UIViewController {
     func validateLogin() {
         if validateEmail(enteredEmailAddress: emailAddressTextField.text!) == false {
             let noEmailAlert = UIAlertController(title: "No Email", message: "Please Reenter A Valid Email And Try Again", preferredStyle: .alert)
-            noEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
-            }))
+            noEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(noEmailAlert, animated: true, completion: nil)
         }
         if (passwordTextField.text?.characters.count)! <= 6 {
             let passwordAlert = UIAlertController(title: "Password Error", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again", preferredStyle: .alert)
-            passwordAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action) in
-            }))
+            passwordAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
             self.present(passwordAlert, animated: true, completion: nil)
         }
     }
