@@ -54,14 +54,10 @@ class ViewController: UIViewController {
     
     func validateLogin() {
         if validateEmail(enteredEmailAddress: emailAddressTextField.text!) == false {
-            let noEmailAlert = UIAlertController(title: "No Email", message: "Please Reenter A Valid Email And Try Again", preferredStyle: .alert)
-            noEmailAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(noEmailAlert, animated: true, completion: nil)
+            alertHandler(title: "No Email", message: "Please Reenter A Valid Email And Try Again")
         }
         if (passwordTextField.text?.characters.count)! <= 6 {
-            let passwordAlert = UIAlertController(title: "Password Error", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again", preferredStyle: .alert)
-            passwordAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            self.present(passwordAlert, animated: true, completion: nil)
+            alertHandler(title: "Password Error", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again")
         }
     }
     
@@ -84,7 +80,7 @@ class ViewController: UIViewController {
             let profileVC = ProfileVC()
             self.present(profileVC, animated: true, completion: nil)
         }
-            performSegue(withIdentifier: "signInToFeedSegue", sender: nil)
+        performSegue(withIdentifier: "signInToFeedSegue", sender: nil)
     }
     
     // MARK: IBActions
@@ -118,6 +114,14 @@ class ViewController: UIViewController {
         DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
         _ = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         checkIfFirstLaunch()
+    }
+}
+
+extension ViewController {
+    func alertHandler(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }
 

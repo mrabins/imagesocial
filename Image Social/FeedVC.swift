@@ -22,6 +22,7 @@ class FeedVC: UIViewController {
     var postImagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
     var postImageSelected = false
+    var theVC = ViewController()
     
     
     override func viewDidLoad() {
@@ -72,16 +73,12 @@ class FeedVC: UIViewController {
     
     @IBAction func postButtonTapped(_ sender: UIButton) {
         guard let caption = captionField.text, caption != "" else {
-            let noCaptionAlert = UIAlertController(title: "No Caption", message: "You Cannot Create A Post Without A Caption. Please Add A Caption And Try Again", preferredStyle: .alert)
-            noCaptionAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                self.present(noCaptionAlert, animated: true, completion: nil)
+            theVC.alertHandler(title: "No Caption", message: "You Cannot Create A Post Without A Caption. Please Add A Caption And Try Again")
             return
         }
         
         guard let image = imageAdd.image, postImageSelected == true else {
-            let noImageAlert = UIAlertController(title: "No Image", message: "You Cannot Create A Post Without A Image. Please Add A Image And Try Again", preferredStyle: .alert)
-            noImageAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-            self.present(noImageAlert, animated: true, completion: nil)
+            theVC.alertHandler(title: "No Image", message: "You Cannot Create A Post Without A Image. Please Add A Image And Try Again")
             return
         }
         
@@ -91,9 +88,7 @@ class FeedVC: UIViewController {
             metaData.contentType = "image/jpeg"
             DataService.ds.REF_POST_IMAGES.child(imageUid).putData(imageData, metadata: metaData) { (metaData, error) in
                 if error != nil {
-                    let errorOccured = UIAlertController(title: "Opps", message: "An Error Occured. Please Try Again.", preferredStyle: .alert)
-                    errorOccured.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                    self.present(errorOccured, animated: true, completion: nil)
+                    self.theVC.alertHandler(title: "Opps", message: "An Error Occured. Please Try Again.")
                 } else {
                     let downloadURL = metaData?.downloadURL()?.absoluteString
                     if let url = downloadURL {
