@@ -20,6 +20,7 @@ class PostsCell: UITableViewCell {
     
     var post: Post!
     var likesRef: DatabaseReference!
+    var profile: ProfileVC!
     
     override func awakeFromNib() {
         super.awakeFromNib()

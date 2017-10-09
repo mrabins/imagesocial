@@ -54,10 +54,10 @@ class ViewController: UIViewController {
     
     func validateLogin() {
         if validateEmail(enteredEmailAddress: emailAddressTextField.text!) == false {
-            alertHandler(title: "No Email", message: "Please Reenter A Valid Email And Try Again")
+            alertHandler(title: "Invalid Email", message: "Please Reenter A Valid Email And Try Again")
         }
         if (passwordTextField.text?.characters.count)! <= 6 {
-            alertHandler(title: "Password Error", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again")
+            alertHandler(title: "Invalid Password", message: "Your Password Does Not Meet Our Standards. Please Ensure You Have At Least 6 Characters And Try again")
         }
     }
     
